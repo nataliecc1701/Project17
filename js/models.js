@@ -24,7 +24,17 @@ class Story {
   /** Parses hostname out of URL and returns it. */
 
   getHostName() {
-    // UNIMPLEMENTED: complete this function!
+    // quick and ugly parse of the URL. should probably learn regex to do this better
+    // find the first / after a .
+    let status = 0;
+    for(let i = 0; i < this.url.length; i++) {
+      if (status === 0 && this.url[i] === ".") {
+        status = 1;
+      }
+      else if (status === 1 && this.url[i] === "/") {
+        return this.url.slice(0, i-1);
+      }
+    }
     return "hostname.com";
   }
 }
