@@ -53,22 +53,29 @@ function putStoriesOnPage() {
 
 /** Sends a story to the server and puts it on the page if it posts correctly */
 
-function sendStoryToServer() {
+async function sendStoryToServer(evt) {
+  evt.preventDefault(); // this function is called as an event listener
   // this shouldn't be called if you're not logged in but just in case
   if(!currentUser) {return}
 
   console.debug("sendStoryToServer");
-  const author = $("#submission-author").value;
-  const title = $("#submission-title").value;
-  const url = $("#submission-url").value;
+  const author = $("#submission-author").val();
+  const title = $("#submission-title").val();
+  const url = $("#submission-url").val();
   const story = {author, title, url};
 
-  const response = storyList.addStory(currentUser, story);
-  if(response) {
+  console.log("sending story to server")
+  try {
+    const response = await storyList.addStory(currentUser, story);
     putStoriesOnPage();
     $storyForm.hide();
+    $submitMessage.text("");
+    $submitMessage.hide();
   }
-  else {
-    $("#submit-message").innerText = "Story submission failed"
+  catch {
+    $submitMessage.text("Story submission failed");
+    $submitMessage.show();
   }
 }
+
+$storyForm.on("submit", sendStoryToServer);
