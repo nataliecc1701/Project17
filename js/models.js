@@ -25,17 +25,36 @@ class Story {
 
   getHostName() {
     // quick and ugly parse of the URL. should probably learn regex to do this better
-    // find the first / after a .
-    let status = 0;
-    for(let i = 0; i < this.url.length; i++) {
-      if (status === 0 && this.url[i] === ".") {
-        status = 1;
+    // we want to truncate the beginning up the the last / before a . and the first / after
+    let seenDot = false;
+    let hostName = "";
+    for(let char of this.url) {
+      if (!seenDot) {
+        if (char === "/") {
+          hostName = "";
+        }
+        else {
+          hostName += char;
+          if (char === ".") {
+            seenDot = true;
+          }
+        }
       }
-      else if (status === 1 && this.url[i] === "/") {
-        return this.url.slice(0, i-1);
+      else {
+        if (char === "/") {
+          break;
+        }
+        else {
+          hostName += char;
+        }
       }
     }
-    return "hostname.com";
+
+    // remove "www." from 
+    if (hostName.slice(0,4) === "www.") {
+      hostName = hostName.replace("www.", "")
+    }
+    return hostName;
   }
 }
 
