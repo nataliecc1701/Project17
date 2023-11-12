@@ -56,6 +56,55 @@ class Story {
     }
     return hostName;
   }
+
+  /** check to see if the story is one of the current user's favorites */
+
+  getIsFavorite() {
+    if (!currentUser) return;
+
+    if(currentUser.favorites.some(f => f.storyId == this.storyId)) {
+      return true;
+    }
+    return false;
+  }
+
+  /** add a story as a favorite */
+
+  async addFavorite() {
+    const response = await axios.post(
+      `${BASE_URL}/users/${currentUser.username}/favorites/${this.storyId}`,
+      {token: currentUser.loginToken}
+    )
+    
+    return new User(
+      {
+        username: user.username,
+        name: user.name,
+        createdAt: user.createdAt,
+        favorites: user.favorites,
+        ownStories: user.stories
+      },
+      response.data.token
+    )
+  }
+
+  async removeFavorite() {
+    const response = await axios.delete(
+      `${BASE_URL}/users/${currentUser.username}/favorites/${this.storyId}`,
+      {token: currentUser.loginToken}
+    )
+    
+    return new User(
+      {
+        username: user.username,
+        name: user.name,
+        createdAt: user.createdAt,
+        favorites: user.favorites,
+        ownStories: user.stories
+      },
+      response.data.token
+    )
+  }
 }
 
 
