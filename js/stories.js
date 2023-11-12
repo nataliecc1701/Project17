@@ -50,3 +50,25 @@ function putStoriesOnPage() {
 
   $allStoriesList.show();
 }
+
+/** Sends a story to the server and puts it on the page if it posts correctly */
+
+function sendStoryToServer() {
+  // this shouldn't be called if you're not logged in but just in case
+  if(!currentUser) {return}
+
+  console.debug("sendStoryToServer");
+  const author = $("#submission-author").value;
+  const title = $("#submission-title").value;
+  const url = $("#submission-url").value;
+  const story = {author, title, url};
+
+  const response = storyList.addStory(currentUser, story);
+  if(response) {
+    putStoriesOnPage();
+    $storyForm.hide();
+  }
+  else {
+    $("#submit-message").innerText = "Story submission failed"
+  }
+}

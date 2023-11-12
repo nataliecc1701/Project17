@@ -111,9 +111,14 @@ class StoryList {
       story : newStory
     });
 
-    const added = new Story(response);
-    this.stories.push(added);
-    return added;    
+    if (response.status === 201) {
+      const added = new Story(response);
+      this.stories.push(added);
+      return added; 
+    }
+    else {
+      return null;
+    }   
   }
 }
 
