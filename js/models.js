@@ -111,7 +111,9 @@ class StoryList {
       story : newStory
     });
 
-    return new Story(response);    
+    const added = new Story(response);
+    this.stories.push(added);
+    return added;    
   }
 }
 
