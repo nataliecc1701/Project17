@@ -82,6 +82,9 @@ class StoryList {
     //  class directly. Why doesn't it make sense for getStories to be an
     //  instance method?
 
+    // STUDENT ANSWER: because getStories is called during construction to call the
+    // constructor, right? because constructors can't be async.
+
     // query the /stories endpoint (no auth required)
     const response = await axios({
       url: `${BASE_URL}/stories`,
