@@ -76,6 +76,8 @@ class Story {
       {token: currentUser.loginToken}
     )
     
+    let { user } = response.data;
+
     return new User(
       {
         username: user.username,
@@ -84,16 +86,20 @@ class Story {
         favorites: user.favorites,
         ownStories: user.stories
       },
-      response.data.token
+      currentUser.loginToken // it took me _so much_ to debug this
+      // the API docs say that they send back the whole user document but not, apparently
+      // the login token, so copy-pasting the code for logging in doesn't work
     )
   }
 
   async removeFavorite() {
     const response = await axios.delete(
       `${BASE_URL}/users/${currentUser.username}/favorites/${this.storyId}`,
-      {token: currentUser.loginToken}
+      {data : {token: currentUser.loginToken} }
     )
     
+    let { user } = response.data;
+
     return new User(
       {
         username: user.username,
@@ -102,7 +108,7 @@ class Story {
         favorites: user.favorites,
         ownStories: user.stories
       },
-      response.data.token
+      currentUser.loginToken
     )
   }
 }
