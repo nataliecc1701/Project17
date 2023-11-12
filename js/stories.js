@@ -64,7 +64,8 @@ async function sendStoryToServer(evt) {
   const url = $("#submission-url").val();
   const story = {author, title, url};
 
-  console.log("sending story to server")
+  $submitMessage.text("Submitting...");
+  $submitMessage.show();
   try {
     const response = await storyList.addStory(currentUser, story);
     putStoriesOnPage();
@@ -74,7 +75,6 @@ async function sendStoryToServer(evt) {
   }
   catch {
     $submitMessage.text("Story submission failed");
-    $submitMessage.show();
   }
 }
 
