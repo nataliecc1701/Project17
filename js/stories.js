@@ -85,6 +85,24 @@ async function faveStarClick(evt) {
 
 $allStoriesList.on("click", ".fa-star", faveStarClick);
 
+/** puts favorite stories on the page
+ * uses the same container as the all stories list
+ */
+
+function putFavoritesOnPage() {
+  console.debug("putFavoritesOnPage");
+
+  $allStoriesList.empty();
+
+  // loop through all of our stories and generate HTML for them
+  for (let story of currentUser.favorites) {
+    const $story = generateStoryMarkup(story);
+    $allStoriesList.append($story);
+  }
+
+  $allStoriesList.show();
+}
+
 /** Sends a story to the server and puts it on the page if it posts correctly */
 
 async function sendStoryToServer(evt) {

@@ -45,3 +45,13 @@ function updateNavOnLogin() {
   $navCenter.show();
   $navUserProfile.text(`${currentUser.username}`).show();
 }
+
+/** When a user clicks on favorites, show their favorite stories */
+
+function navFaveStories(evt) {
+  console.debug("navFaveStories", evt);
+  hidePageComponents();
+  putFavoritesOnPage();
+}
+
+$navFaves.on("click", navFaveStories);
