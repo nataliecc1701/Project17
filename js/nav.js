@@ -1,5 +1,9 @@
 "use strict";
 
+// keep track of whether we're looking at all stories, favorites, or submitted stories
+// values should only ever be "all", "mine", or "favorites"
+let showing = "all"
+
 /******************************************************************************
  * Handling navbar clicks and updating navbar
  */
@@ -8,6 +12,7 @@
 
 function navAllStories(evt) {
   console.debug("navAllStories", evt);
+  showing = "all";
   hidePageComponents();
   putStoriesOnPage();
 }
@@ -50,6 +55,7 @@ function updateNavOnLogin() {
 
 function navFaveStories(evt) {
   console.debug("navFaveStories", evt);
+  showing = "favorites";
   hidePageComponents();
   putFavoritesOnPage();
 }
@@ -60,6 +66,7 @@ $navFaves.on("click", navFaveStories);
 
 function navMine(evt) {
   console.debug("navMine", evt)
+  showing = "mine";
   hidePageComponents();
   putMyStoriesOnPage();
 }

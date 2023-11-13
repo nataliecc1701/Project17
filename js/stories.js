@@ -27,6 +27,17 @@ function getFaveStar(story) {
 }
 
 /**
+ * Checks to see if the story is yours and if it is, provides html for a trash can
+ */
+
+function getTrashCan(story) {
+  if(story.getIsMine(currentUser)) {
+    return "<span class='trash-can'><i class='fa fa-trash-o'></i></span>";
+  }
+  return "";
+}
+
+/**
  * A render method to render HTML for an individual Story instance
  * - story: an instance of Story
  *
@@ -38,9 +49,10 @@ function generateStoryMarkup(story) {
 
   const hostName = story.getHostName();
   const faveStar = getFaveStar(story);
+  const trashCan = getTrashCan(story);
   return $(`
       <li id="${story.storyId}">
-        ${faveStar}
+        ${faveStar} ${trashCan}
         <a href="${story.url}" target="a_blank" class="story-link">
           ${story.title}
         </a>
@@ -84,6 +96,27 @@ async function faveStarClick(evt) {
 }
 
 $allStoriesList.on("click", ".fa-star", faveStarClick);
+
+/** 
+ * click the trash can to prompt to remove a story 
+ * */
+
+async function trashCanClick(evt) {
+  console.debug("trashCanClick");
+
+  const id = evt.target.parentElement.parentElement.id;
+  const story = storyList.stories.filter(s => s.storyId === id)[0]
+  const storyTitle = story.title;
+
+  if (confirm(`Delete your posted story ${storyTitle}?`)) {
+    await story.removeStory(currentUser);
+    if (showing === "mine") {putMyStoriesOnPage()}
+    else if (showing === "favorites") {putFavoritesOnPage()}
+    else {putStoriesOnPage()}
+  }
+}
+
+$allStoriesList.on("click", ".fa-trash-o", trashCanClick);
 
 /** puts favorite stories on the page
  * uses the same container as the all stories list

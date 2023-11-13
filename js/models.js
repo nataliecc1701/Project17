@@ -70,13 +70,29 @@ class Story {
     return false;
   }
 
+  /** get if the story was posted by the user */
+
+  getIsMine( user ) {
+    return (this.username === user.username);
+  }
+
+  /** 
+   * remove the story from the database and the storyList object 
+   * */
+
   async removeStory( user ) {
-    const response = await axios.delete(`${BASE_URL}/story/${this.storyId}`,
+    const response = await axios.delete(`${BASE_URL}/stories/${this.storyId}`,
     {data : {token : user.loginToken}});
 
     if (response.status === 200) {
       const idx = storyList.stories.indexOf(this);
       storyList.stories.splice(idx, 1);
+      
+      const faveIdx = user.favorites.indexOf();
+      user.favorites.splice(faveIdx, 1);
+
+      const subsIdx = user.ownStories.indexOf();
+      user.ownStories.splice(subsIdx, 1);
     }
   }
 }
@@ -137,6 +153,7 @@ class StoryList {
     if (response.status === 201) {
       const added = new Story(response.data.story);
       this.stories.unshift(added);
+      user.ownStories.push(added);
       return added; 
     }
     else {
