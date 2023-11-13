@@ -28,6 +28,8 @@ class Story {
     // we want to truncate the beginning up the the last / before a . and the first / after
     let seenDot = false;
     let hostName = "";
+
+    if (typeof this.url != "string") console.log(storyList.stories);
     for(let char of this.url) {
       if (!seenDot) {
         if (char === "/") {
@@ -66,6 +68,16 @@ class Story {
       return true;
     }
     return false;
+  }
+
+  async removeStory( user ) {
+    const response = await axios.delete(`${BASE_URL}/story/${this.storyId}`,
+    {data : {token : user.loginToken}});
+
+    if (response.status === 200) {
+      const idx = storyList.stories.indexOf(this);
+      storyList.stories.splice(idx, 1);
+    }
   }
 }
 
@@ -123,7 +135,7 @@ class StoryList {
     });
 
     if (response.status === 201) {
-      const added = new Story(response);
+      const added = new Story(response.data.story);
       this.stories.push(added);
       return added; 
     }

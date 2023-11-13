@@ -141,7 +141,8 @@ async function sendStoryToServer(evt) {
     $submitMessage.text("");
     $submitMessage.hide();
   }
-  catch {
+  catch(err) {
+    console.log(err);
     $submitMessage.text("Story submission failed");
   }
 }
