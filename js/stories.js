@@ -103,6 +103,22 @@ function putFavoritesOnPage() {
   $allStoriesList.show();
 }
 
+/** put stories posted by user on page */
+
+function putMyStoriesOnPage() {
+  console.debug("putMyStoriesOnPage");
+
+  $allStoriesList.empty();
+
+  // loop through all of our stories and generate HTML for them
+  for (let story of currentUser.ownStories) {
+    const $story = generateStoryMarkup(story);
+    $allStoriesList.append($story);
+  }
+
+  $allStoriesList.show();
+}
+
 /** Sends a story to the server and puts it on the page if it posts correctly */
 
 async function sendStoryToServer(evt) {

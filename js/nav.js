@@ -55,3 +55,13 @@ function navFaveStories(evt) {
 }
 
 $navFaves.on("click", navFaveStories);
+
+//** When a user clicks on mine, show them their submitted stories */
+
+function navMine(evt) {
+  console.debug("navMine", evt)
+  hidePageComponents();
+  putMyStoriesOnPage();
+}
+
+$navMine.on("click", navMine);
