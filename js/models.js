@@ -136,7 +136,7 @@ class StoryList {
 
     if (response.status === 201) {
       const added = new Story(response.data.story);
-      this.stories.push(added);
+      this.stories.unshift(added);
       return added; 
     }
     else {
