@@ -74,12 +74,12 @@ async function faveStarClick(evt) {
   const id = evt.target.parentElement.parentElement.id;
   const story = storyList.stories.filter(s => s.storyId === id)[0]
   if (!story.getIsFavorite()) {
-    currentUser = await story.addFavorite()
-    evt.target.classList.replace('far', 'fas')
+    currentUser = await currentUser.addFavorite(story);
+    evt.target.classList.replace('far', 'fas');
   }
   else {
-    currentUser = await story.removeFavorite()
-    evt.target.classList.replace('fas', 'far')
+    currentUser = await currentUser.removeFavorite(story);
+    evt.target.classList.replace('fas', 'far');
   }
 }
 

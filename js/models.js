@@ -67,52 +67,6 @@ class Story {
     }
     return false;
   }
-
-  /** add a story as a favorite */
-
-  async addFavorite() {
-    console.debug(`addFavorite: ${this.storyId}`);
-    const response = await axios.post(
-      `${BASE_URL}/users/${currentUser.username}/favorites/${this.storyId}`,
-      {token: currentUser.loginToken}
-    )
-    
-    let { user } = response.data;
-
-    return new User(
-      {
-        username: user.username,
-        name: user.name,
-        createdAt: user.createdAt,
-        favorites: user.favorites,
-        ownStories: user.stories
-      },
-      currentUser.loginToken // it took me _so much_ to debug this
-      // the API docs say that they send back the whole user document but not, apparently
-      // the login token, so copy-pasting the code for logging in doesn't work
-    )
-  }
-
-  async removeFavorite() {
-    console.debug(`removeFavorite: ${this.storyId}`);
-    const response = await axios.delete(
-      `${BASE_URL}/users/${currentUser.username}/favorites/${this.storyId}`,
-      {data : {token: currentUser.loginToken} }
-    )
-    
-    let { user } = response.data;
-
-    return new User(
-      {
-        username: user.username,
-        name: user.name,
-        createdAt: user.createdAt,
-        favorites: user.favorites,
-        ownStories: user.stories
-      },
-      currentUser.loginToken
-    )
-  }
 }
 
 
@@ -293,5 +247,52 @@ class User {
       console.error("loginViaStoredCredentials failed", err);
       return null;
     }
+  }
+  
+
+  /** add a story as a favorite */
+
+  async addFavorite(story) {
+    console.debug(`addFavorite: ${story.storyId}`);
+    const response = await axios.post(
+      `${BASE_URL}/users/${currentUser.username}/favorites/${story.storyId}`,
+      {token: currentUser.loginToken}
+    )
+    
+    let { user } = response.data;
+
+    return new User(
+      {
+        username: user.username,
+        name: user.name,
+        createdAt: user.createdAt,
+        favorites: user.favorites,
+        ownStories: user.stories
+      },
+      currentUser.loginToken // it took me _so much_ to debug this
+      // the API docs say that they send back the whole user document but not, apparently
+      // the login token, so copy-pasting the code for logging in doesn't work
+    )
+  }
+
+  async removeFavorite(story) {
+    console.debug(`removeFavorite: ${story.storyId}`);
+    const response = await axios.delete(
+      `${BASE_URL}/users/${currentUser.username}/favorites/${story.storyId}`,
+      {data : {token: currentUser.loginToken} }
+    )
+    
+    let { user } = response.data;
+
+    return new User(
+      {
+        username: user.username,
+        name: user.name,
+        createdAt: user.createdAt,
+        favorites: user.favorites,
+        ownStories: user.stories
+      },
+      currentUser.loginToken
+    )
   }
 }
