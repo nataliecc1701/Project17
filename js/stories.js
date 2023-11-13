@@ -12,6 +12,20 @@ async function getAndShowStoriesOnStart() {
   putStoriesOnPage();
 }
 
+/** 
+ * Generates the star used to show if a story is favorited or not
+ */
+
+function getFaveStar(story) {
+  if (!currentUser) return "";
+
+  // shamelessly copying the html for the stars from the example
+  if (story.getIsFavorite()) {
+    return "<span class='star'><i class='fa-star fas'> </i></span>"
+  }
+  else return "<span class='star'><i class='fa-star far'> </i></span>"
+}
+
 /**
  * A render method to render HTML for an individual Story instance
  * - story: an instance of Story
@@ -23,8 +37,10 @@ function generateStoryMarkup(story) {
   // console.debug("generateStoryMarkup", story);
 
   const hostName = story.getHostName();
+  const faveStar = getFaveStar(story);
   return $(`
       <li id="${story.storyId}">
+        ${faveStar}
         <a href="${story.url}" target="a_blank" class="story-link">
           ${story.title}
         </a>
@@ -50,6 +66,24 @@ function putStoriesOnPage() {
 
   $allStoriesList.show();
 }
+
+/** handles clicks on favorite stars */
+async function faveStarClick(evt) {
+  console.debug("faveStarClick");
+  
+  const id = evt.target.parentElement.parentElement.id;
+  const story = storyList.stories.filter(s => s.storyId === id)[0]
+  if (!story.getIsFavorite()) {
+    currentUser = await story.addFavorite()
+    evt.target.classList.replace('far', 'fas')
+  }
+  else {
+    currentUser = await story.removeFavorite()
+    evt.target.classList.replace('fas', 'far')
+  }
+}
+
+$allStoriesList.on("click", ".fa-star", faveStarClick);
 
 /** Sends a story to the server and puts it on the page if it posts correctly */
 

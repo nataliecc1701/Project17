@@ -71,6 +71,7 @@ class Story {
   /** add a story as a favorite */
 
   async addFavorite() {
+    console.debug(`addFavorite: ${this.storyId}`);
     const response = await axios.post(
       `${BASE_URL}/users/${currentUser.username}/favorites/${this.storyId}`,
       {token: currentUser.loginToken}
@@ -93,6 +94,7 @@ class Story {
   }
 
   async removeFavorite() {
+    console.debug(`removeFavorite: ${this.storyId}`);
     const response = await axios.delete(
       `${BASE_URL}/users/${currentUser.username}/favorites/${this.storyId}`,
       {data : {token: currentUser.loginToken} }
