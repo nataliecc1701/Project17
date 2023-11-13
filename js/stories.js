@@ -57,8 +57,8 @@ function generateStoryMarkup(story) {
           ${story.title}
         </a>
         <small class="story-hostname">(${hostName})</small>
-        <small class="story-author">by ${story.author}</small>
-        <small class="story-user">posted by ${story.username}</small>
+        <strong class="story-author">by ${story.author}</strong>
+        <span class="story-user">posted by ${story.username}</span>
       </li>
     `);
 }

@@ -73,6 +73,7 @@ class Story {
   /** get if the story was posted by the user */
 
   getIsMine( user ) {
+    if (!user) return false;
     return (this.username === user.username);
   }
 
